@@ -2,8 +2,13 @@ import AnalyticsChart from "@/components/AnalyticsChart";
 import Header from "@/components/Header";
 import LayerDetailsCard from "@/components/LayerDetailsCard";
 import LayerSelector from "@/components/LayerSelector";
+import WorkingChart from "@/components/WorkingChart";
+import { ChartEnums } from "@/enums/ChartEnums";
+import getLayersStats from "@/server/general";
 
-export default function Home() {
+export default async function Home() {
+  const stats = await getLayersStats();
+
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       <Header />
@@ -34,6 +39,13 @@ export default function Home() {
           </section>
           <div className="grid flex-1 scroll-mt-20 items-start gap-10 md:grid-cols-1 md:gap-6 lg:grid-cols-2 xl:gap-10">
             <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
+              <AnalyticsChart
+                title="Active Accounts"
+                chartType={ChartEnums.ACTIVE_ACCOUNTS}
+                stats={stats}
+              />
+            </div>
+            {/* <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
               <AnalyticsChart title="Analytics" />
             </div>
             <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
@@ -50,10 +62,7 @@ export default function Home() {
             </div>
             <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
               <AnalyticsChart title="Analytics" />
-            </div>
-            <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
-              <AnalyticsChart title="Analytics" />
-            </div>
+            </div> */}
           </div>
         </div>
       </main>
