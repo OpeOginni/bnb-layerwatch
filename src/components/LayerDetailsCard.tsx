@@ -35,6 +35,7 @@ export default function LayerDetailsCard(props: LayerDetailsCardProps) {
         <Link
           className="border-2 border-black rounded-lg px-3 py-2 hover:bg-slate-200"
           href={props.homeSite}
+          target="_blank"
         >
           Learn More
         </Link>
