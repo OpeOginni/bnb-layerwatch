@@ -47,6 +47,7 @@ export default async function LayerDappsPage({
             type={LayerDetails[LayerIndex[params.layer2]].type}
             logo={LayerDetails[LayerIndex[params.layer2]].logo}
             homeSite={LayerDetails[LayerIndex[params.layer2]].homeSite}
+            dapps="/"
           />
         </section>
       </div>

@@ -38,3 +38,12 @@ BNB Layer Watch aims to expand beyond its initial scope to provide a more compre
 BNB Layer Watch is a dynamic and evolving project aimed at providing valuable insights into the BNB Chain's L2 ecosystem. Whether you're a developer seeking the best L2 for your dApp, an investor tracking L2 adoption, or simply an enthusiast interested in the health and growth of BNB Chain, BNB Layer Watch offers the tools and data you need.
 
 Stay tuned as we continue to build out the platform, adding new features and expanding the scope to fully meet the needs of our users.
+
+### TECH STACK
+
+- NextJS
+- ReactQuery
+- ShadcnUI
+- Rechart
+- NodeReal
+- Xterscan
