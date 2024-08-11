@@ -56,11 +56,11 @@ export default function Header() {
           </Link>
           <Link
             className={cn(
-              pathname === "/about" ? selectedClass : unselectedClass
+              pathname === "/roadmap" ? selectedClass : unselectedClass
             )}
-            href={"/about"}
+            href={"/roadmap"}
           >
-            About
+            Roadmap
           </Link>
         </div>
       </div>
