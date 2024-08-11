@@ -2,20 +2,22 @@
 import { cn } from "@/lib/utils";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
+type TimePeriods =
+  | "1 week"
+  | "1 month"
+  | "3 months"
+  | "6 months"
+  | "1 year"
+  | "All time";
 export default function TimePeriodSelector({
   onChange,
   selectedTimePeriod,
 }: {
-  onChange?: Dispatch<
-    SetStateAction<"1 week" | "1 month" | "6 months" | "1 year" | "All time">
-  >;
-  selectedTimePeriod: "1 week" | "1 month" | "6 months" | "1 year" | "All time";
+  onChange?: Dispatch<SetStateAction<TimePeriods>>;
+  selectedTimePeriod: TimePeriods;
 }) {
-  const handlePeriodChange = (
-    period: "1 week" | "1 month" | "6 months" | "1 year" | "All time"
-  ) => {
+  const handlePeriodChange = (period: TimePeriods) => {
     if (onChange) {
-      console.log("Changed", period);
       onChange(period);
     }
   };
@@ -44,6 +46,18 @@ export default function TimePeriodSelector({
           onClick={() => handlePeriodChange("1 month")}
         >
           1 month
+        </button>
+      </div>
+      <div className="flex items-center space-x-2">
+        <button
+          type="button"
+          className={cn(
+            "inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 px-3 text-xs rounded-2xl",
+            selectedTimePeriod === "3 months" ? "bg-black text-white" : ""
+          )}
+          onClick={() => handlePeriodChange("3 months")}
+        >
+          3 months
         </button>
       </div>
       <div className="flex items-center space-x-2">

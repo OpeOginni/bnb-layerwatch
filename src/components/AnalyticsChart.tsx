@@ -40,6 +40,14 @@ type ChartDataType = {
   xterio?: number;
 };
 
+type TimePeriods =
+  | "1 week"
+  | "1 month"
+  | "3 months"
+  | "6 months"
+  | "1 year"
+  | "All time";
+
 type AnalyticsChartProps = {
   title: string;
   chartType?: ChartEnums;
@@ -47,9 +55,7 @@ type AnalyticsChartProps = {
 };
 
 export default function AnalyticsChart(props: AnalyticsChartProps) {
-  const [timePeriod, setTimePeriod] = useState<
-    "1 week" | "1 month" | "6 months" | "1 year" | "All time"
-  >("1 week");
+  const [timePeriod, setTimePeriod] = useState<TimePeriods>("1 week");
 
   const [selectedLayers, setSelectedLayers] = useState<string[]>([
     "opBNB",
@@ -95,17 +101,17 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
               xterio: 0,
             };
           }
-          mergedDataMap[item.timestamp].opBNB = Number.parseInt(
-            item[props.chartType],
-            10
+          mergedDataMap[item.timestamp].opBNB = Number.parseFloat(
+            Number.parseFloat(String(item[props.chartType]) || "0").toFixed(12)
           );
         }
 
         for (const item of combo) {
           if (mergedDataMap[item.timestamp]) {
-            mergedDataMap[item.timestamp].combo = Number.parseInt(
-              item[props.chartType],
-              10
+            mergedDataMap[item.timestamp].combo = Number.parseFloat(
+              Number.parseFloat(String(item[props.chartType]) || "0").toFixed(
+                12
+              )
             );
           }
         }
@@ -114,27 +120,27 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
 
         for (const item of xterio) {
           if (item.timestamp && mergedDataMap[item.timestamp]) {
-            mergedDataMap[item.timestamp].xterio = Number.parseInt(
-              item.active_accounts || "0",
-              10
+            mergedDataMap[item.timestamp].xterio = Number.parseFloat(
+              Number.parseFloat(String(item[props.chartType]) || "0").toFixed(
+                12
+              )
             );
           }
         }
 
-        // const mergedData = Object.values(mergedDataMap);
-        // return filterDataByPeriod(mergedData, timePeriod);
+        // Filter out entries where all values are 0
+        const filteredData = Object.values(mergedDataMap).filter(
+          (data) => data.opBNB !== 0 || data.combo !== 0 || data.xterio !== 0
+        );
 
-        return Object.values(mergedDataMap);
+        return filteredData;
       }
     },
     enabled: !!props.stats && !!props.chartType,
     refetchOnWindowFocus: false, // Prevent refetching on window focus
   });
 
-  const filterDataByPeriod = (
-    data: ChartDataType[],
-    period: "1 week" | "1 month" | "6 months" | "1 year" | "All time"
-  ) => {
+  const filterDataByPeriod = (data: ChartDataType[], period: TimePeriods) => {
     const now = Date.now() / 1000;
 
     switch (period) {
@@ -142,6 +148,8 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
         return data.filter((d) => d.timestamp >= now - 7 * 24 * 3600);
       case "1 month":
         return data.filter((d) => d.timestamp >= now - 30 * 24 * 3600);
+      case "3 months":
+        return data.filter((d) => d.timestamp >= now - 3 * 30 * 24 * 3600);
       case "6 months":
         return data.filter((d) => d.timestamp >= now - 6 * 30 * 24 * 3600);
       case "1 year":
@@ -157,7 +165,6 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
   };
 
   const filteredData = useMemo(() => {
-    console.log("Period Change");
     const chartData = data ? filterDataByPeriod(data, timePeriod) : [];
 
     return chartData?.map((item) => {
@@ -210,11 +217,7 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
               tickFormatter={formatDate} // Format the timestamp to date
             />
             {props.chartType === ChartEnums.AVERAGE_GAS_PRICE ? (
-              <YAxis
-                allowDecimals={true}
-                domain={["dataMin", "auto"]}
-                tickFormatter={(value) => value.toFixed(3)}
-              />
+              <YAxis />
             ) : (
               <YAxis />
             )}

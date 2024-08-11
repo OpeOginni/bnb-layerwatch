@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryProvider";
 import { LayersDataStoreProvider } from "@/providers/Create-layer-data-store";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,8 @@ export default function RootLayout({
             {" "}
             <div className="relative flex min-h-screen flex-col bg-background">
               <Header />
-              {children}
+              <main className="flex-grow pb-6">{children}</main>
+              <Footer />
             </div>
           </ReactQueryClientProvider>
         </LayersDataStoreProvider>

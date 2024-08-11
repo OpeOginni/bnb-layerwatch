@@ -9,8 +9,12 @@ export async function getStats_xterio(statsType: ChartEnums) {
       return getActiveAccounts_xterio();
     case ChartEnums.AVERAGE_GAS_PRICE:
       return getAverageGasPrice_xterio();
+    case ChartEnums.TRANSACTIONS:
+      return getTransactions_xterio();
+    case ChartEnums.BNB_TRANSFERS:
+      return getBnbTransfers_xterio();
     default:
-      throw new Error("Invalid stats type");
+      return [];
   }
 }
 
@@ -44,6 +48,44 @@ export async function getAverageGasPrice_xterio() {
     const formattedItem: Partial<LayerStatisticsData> = {
       timestamp: new Date(item.date).getTime() / 1000,
       average_gas_price: item.value,
+    };
+
+    return formattedItem;
+  });
+
+  return formattedResponse;
+}
+
+export async function getTransactions_xterio() {
+  const response = await fetch(
+    `${process.env.XTERIO_EXPLORER_URL}/api/v1/lines/newTxns`
+  ).then((res) => res.json());
+
+  const formattedResponse: Partial<LayerStatisticsData>[] = (
+    response as xterioStatsResponse
+  ).chart.map((item) => {
+    const formattedItem: Partial<LayerStatisticsData> = {
+      timestamp: new Date(item.date).getTime() / 1000,
+      count: Number(item.value),
+    };
+
+    return formattedItem;
+  });
+
+  return formattedResponse;
+}
+
+export async function getBnbTransfers_xterio() {
+  const response = await fetch(
+    `${process.env.XTERIO_EXPLORER_URL}/api/v1/lines/newNativeCoinTransfers`
+  ).then((res) => res.json());
+
+  const formattedResponse: Partial<LayerStatisticsData>[] = (
+    response as xterioStatsResponse
+  ).chart.map((item) => {
+    const formattedItem: Partial<LayerStatisticsData> = {
+      timestamp: new Date(item.date).getTime() / 1000,
+      count: Number(item.value),
     };
 
     return formattedItem;

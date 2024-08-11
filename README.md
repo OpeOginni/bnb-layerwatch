@@ -12,7 +12,7 @@ BNB Layer Watch provides charts that allow users to compare essential metrics ac
 
 - **Active Accounts**: Visualize the growth and activity levels of users on each L2.
 - **Gas Usage**: Monitor the gas efficiency of transactions across different L2s.
-- **Transaction Volumes**: Compare the daily transaction counts to gauge the adoption and usage of each L2.
+- **Transaction Volumes**: Compare the daily transaction counts (BEP20 | NFTs | BNB) to gauge the adoption and usage of each L2.
 
 ### 2. Descriptive Cards
 
