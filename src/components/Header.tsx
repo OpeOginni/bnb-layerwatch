@@ -50,7 +50,7 @@ export default function Header() {
             className={cn(
               pathname.includes("/dapps") ? selectedClass : unselectedClass
             )}
-            href={"/dapps"}
+            href={"/"}
           >
             dApps
           </Link>

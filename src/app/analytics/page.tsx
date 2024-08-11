@@ -18,7 +18,7 @@ export default async function AnalyticsPage() {
       </section>
       <div className="px-14 mx-auto relative">
         <Suspense fallback={<LoadingChartGrid />}>
-          <div className="grid flex-1 scroll-mt-20 items-start gap-10 md:grid-cols-1 md:gap-6 lg:grid-cols-2 xl:gap-10">
+          <div className="grid flex-1 scroll-mt-20 items-start gap-10 md:grid-cols-1 md:gap-6 lg:grid-cols-2  xl:gap-10 2xl:grid-cols-3">
             <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
               <AnalyticsChart
                 title="Active Accounts"

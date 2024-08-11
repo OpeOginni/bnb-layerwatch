@@ -27,6 +27,7 @@ export default async function Home() {
             type="universal"
             logo="./logo/bnb.png"
             homeSite="https://opbnb.bnbchain.org/en"
+            dapps="https://dappbay.bnbchain.org/ranking/chain/opbnb"
           />
           <LayerDetailsCard
             name="COMBO"
@@ -34,6 +35,7 @@ export default async function Home() {
             type="gaming"
             logo="./logo/combo.png"
             homeSite="https://combonetwork.io/"
+            dapps="https://combonetwork.io/all-apps"
           />
           <LayerDetailsCard
             name="Xterio"
@@ -41,6 +43,7 @@ export default async function Home() {
             type="gaming"
             logo="./logo/xterio.png"
             homeSite="https://xter.io/"
+            dapps="https://xter.io/games"
           />
         </section>
       </div>

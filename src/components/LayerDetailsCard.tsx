@@ -14,6 +14,7 @@ type LayerDetailsCardProps = {
   type: string;
   logo: string;
   homeSite: string;
+  dapps: string;
 };
 
 export default function LayerDetailsCard(props: LayerDetailsCardProps) {
@@ -41,7 +42,8 @@ export default function LayerDetailsCard(props: LayerDetailsCardProps) {
         </Link>
         <Link
           className="border-2 bg-black text-white border-black rounded-lg px-3 py-2 hover:bg-slate-900"
-          href={`/dapps/${props.name.toLowerCase()}`}
+          href={props.dapps}
+          target="_blank"
         >
           Check Out dApps
         </Link>
