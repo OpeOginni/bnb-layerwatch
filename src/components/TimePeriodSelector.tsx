@@ -1,4 +1,4 @@
-"use cleint";
+"use client";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 export default function TimePeriodSelector({

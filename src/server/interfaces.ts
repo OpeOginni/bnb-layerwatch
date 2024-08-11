@@ -12,6 +12,10 @@ export interface comboStatsResponse {
   };
 }
 
+export interface xterioStatsResponse {
+  chart: { date: string; value: string }[];
+}
+
 export interface LayerStatisticsData {
   timestamp: number;
   count: number;

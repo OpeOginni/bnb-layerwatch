@@ -18,22 +18,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltipContent } from "./ui/chart";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "./ui/chart";
 import LayerSelector from "./LayerSelector";
 import TimePeriodSelector from "./TimePeriodSelector"; // Import your new component
-import type { ChartEnums } from "@/enums/ChartEnums";
+import { ChartEnums } from "@/enums/ChartEnums";
 import type { LayerStatisticsData } from "@/server/interfaces";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2Icon } from "lucide-react";
+import { LoadingChart } from "./LoadingChart";
+import { getActiveAccounts_xterio, getStats_xterio } from "@/server/xterio";
 
-const chartConfig = {
-  opBNB: {
-    label: "opBNB",
-    color: "hsl(var(--chart-1))",
-  },
-  combo: {
-    label: "Combo",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+type ChartDataType = {
+  timestamp: number;
+  opBNB: number;
+  combo: number;
+  xterio?: number;
+};
 
 type AnalyticsChartProps = {
   title: string;
@@ -42,47 +47,86 @@ type AnalyticsChartProps = {
 };
 
 export default function AnalyticsChart(props: AnalyticsChartProps) {
-  const [chartData, setChartData] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<ChartDataType[]>([]);
   const [timePeriod, setTimePeriod] = useState<
     "1 week" | "1 month" | "6 months" | "1 year" | "All time"
   >("1 week");
 
-  useEffect(() => {
-    if (props.stats) {
-      const { opBNB, combo } = props.stats;
+  const chartConfig = {
+    stats: {
+      label: props.title,
+    },
+    opBNB: {
+      label: "opBNB",
+      // color: "hsl(var(--chart-1))",
+      color: "hsl(var(--opBNB))",
+    },
+    combo: {
+      label: "Combo",
+      // color: "hsl(var(--chart-2))",
+      color: "hsl(var(--combo))",
+    },
+    xterio: {
+      label: "Xterio",
+      // color: "hsl(var(--chart-2))",
+      color: "hsl(var(--xterio))",
+    },
+  } satisfies ChartConfig;
 
-      const mergedDataMap: Record<number, any> = {};
+  const { data, isLoading } = useQuery({
+    queryKey: ["getStats", props.chartType, timePeriod],
+    queryFn: async () => {
+      if (props.stats && props.chartType) {
+        const { opBNB, combo } = props.stats;
 
-      for (const item of opBNB) {
-        if (!mergedDataMap[item.timestamp]) {
-          mergedDataMap[item.timestamp] = {
-            timestamp: item.timestamp,
-            opBNB: null,
-            combo: null,
-          };
-        }
-        mergedDataMap[item.timestamp].opBNB = Number.parseInt(
-          item.active_accounts,
-          10
-        );
-      }
+        const mergedDataMap: Record<number, ChartDataType> = {};
 
-      for (const item of combo) {
-        if (mergedDataMap[item.timestamp]) {
-          mergedDataMap[item.timestamp].combo = Number.parseInt(
-            item.active_accounts,
+        for (const item of opBNB) {
+          if (!mergedDataMap[item.timestamp]) {
+            mergedDataMap[item.timestamp] = {
+              timestamp: item.timestamp,
+              opBNB: 0,
+              combo: 0,
+              xterio: 0,
+            };
+          }
+          mergedDataMap[item.timestamp].opBNB = Number.parseInt(
+            item[props.chartType],
             10
           );
         }
-      }
 
-      const mergedData = Object.values(mergedDataMap);
-      setChartData(filterDataByPeriod(mergedData, timePeriod));
-    }
-  }, [props.stats, timePeriod]);
+        for (const item of combo) {
+          if (mergedDataMap[item.timestamp]) {
+            mergedDataMap[item.timestamp].combo = Number.parseInt(
+              item[props.chartType],
+              10
+            );
+          }
+        }
+
+        const xterio = await getStats_xterio(props.chartType);
+
+        for (const item of xterio) {
+          if (item.timestamp && mergedDataMap[item.timestamp]) {
+            mergedDataMap[item.timestamp].xterio = Number.parseInt(
+              item.active_accounts || "0",
+              10
+            );
+          }
+        }
+
+        const mergedData = Object.values(mergedDataMap);
+        console.log(filterDataByPeriod(mergedData, timePeriod));
+
+        return filterDataByPeriod(mergedData, timePeriod);
+      }
+    },
+    enabled: !!props.stats && !!props.chartType,
+  });
 
   const filterDataByPeriod = (
-    data: { timestamp: number }[],
+    data: ChartDataType[],
     period: "1 week" | "1 month" | "6 months" | "1 year" | "All time"
   ) => {
     const now = Date.now() / 1000;
@@ -106,10 +150,13 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   };
 
+  if (isLoading) {
+    return <LoadingChart />;
+  }
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
+        <CardTitle className="pb-4">{props.title}</CardTitle>
         <CardDescription>
           <LayerSelector />
           <TimePeriodSelector onChange={setTimePeriod} />{" "}
@@ -118,7 +165,7 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
@@ -132,8 +179,20 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
               tickMargin={8}
               tickFormatter={formatDate} // Format the timestamp to date
             />
-            <YAxis />
-            <Tooltip content={<ChartTooltipContent indicator="dot" />} />
+            {props.chartType === ChartEnums.AVERAGE_GAS_PRICE ? (
+              <YAxis
+                allowDecimals={true}
+                domain={["dataMin", "auto"]}
+                tickFormatter={(value) => value.toFixed(3)}
+              />
+            ) : (
+              <YAxis />
+            )}
+
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent labelKey="stats" indicator="dot" />}
+            />
             <Area
               dataKey="opBNB"
               type="natural"
@@ -148,21 +207,24 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
               fillOpacity={0.4}
               stroke="var(--color-combo)"
             />
+            <Area
+              dataKey="xterio"
+              type="natural"
+              fill="var(--color-xterio)"
+              fillOpacity={0.4}
+              stroke="var(--color-xterio)"
+            />
           </AreaChart>
         </ChartContainer>
       </CardContent>
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by X% this month{" "}
-              {/* You can dynamically calculate this */}
-            </div>
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
               {/* Dynamically display the date range */}
-              {chartData.length
-                ? `${formatDate(chartData[0].timestamp)} - ${formatDate(
-                    chartData[chartData.length - 1].timestamp
+              {data?.length
+                ? `${formatDate(data[0].timestamp)} - ${formatDate(
+                    data[data.length - 1].timestamp
                   )}`
                 : ""}
             </div>
