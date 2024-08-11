@@ -31,13 +31,19 @@ export default function LayerDetailsCard(props: LayerDetailsCardProps) {
       <CardContent>
         <p>{props.description}</p>
       </CardContent>
-      <CardFooter className="mt-auto">
+      <CardFooter className="mt-auto gap-4">
         <Link
           className="border-2 border-black rounded-lg px-3 py-2 hover:bg-slate-200"
           href={props.homeSite}
           target="_blank"
         >
           Learn More
+        </Link>
+        <Link
+          className="border-2 bg-black text-white border-black rounded-lg px-3 py-2 hover:bg-slate-900"
+          href={`/dapps/${props.name.toLowerCase()}`}
+        >
+          Check Out dApps
         </Link>
       </CardFooter>
     </Card>

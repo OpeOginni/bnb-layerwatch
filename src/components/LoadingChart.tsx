@@ -86,15 +86,17 @@ export function LoadingChart() {
 }
 
 export function LoadingChartGrid() {
-  <div className="grid flex-1 scroll-mt-20 items-start gap-10 md:grid-cols-1 md:gap-6 lg:grid-cols-2 xl:gap-10">
-    <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
-      <LoadingChart />
+  return (
+    <div className="grid flex-1 scroll-mt-20 items-start gap-10 md:grid-cols-1 md:gap-6 lg:grid-cols-2 xl:gap-10">
+      <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
+        <LoadingChart />
+      </div>
+      <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
+        <LoadingChart />
+      </div>
+      <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
+        <LoadingChart />
+      </div>
     </div>
-    <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
-      <LoadingChart />
-    </div>
-    <div className="themes-wrapper group relative flex flex-col overflow-hidden rounded-xl border shadow transition-all duration-200 ease-in-out hover:z-30">
-      <LoadingChart />
-    </div>
-  </div>;
+  );
 }

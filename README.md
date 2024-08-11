@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BNB Layer Watch
 
-## Getting Started
+## Overview
 
-First, run the development server:
+**BNB Layer Watch** is a comprehensive dashboard designed to monitor and analyze the Layer 2 (L2) ecosystem on the BNB Chain. The platform currently offers detailed insights and comparisons of three prominent L2 solutions: **opBNB**, **Combo**, and **xterio**. By aggregating key metrics and presenting them in an intuitive interface, BNB Layer Watch serves as a valuable resource for developers, investors, and BNB Chain enthusiasts.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. Comparative Analytics
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+BNB Layer Watch provides charts that allow users to compare essential metrics across the three featured L2 solutions. These comparisons include:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Active Accounts**: Visualize the growth and activity levels of users on each L2.
+- **Gas Usage**: Monitor the gas efficiency of transactions across different L2s.
+- **Transaction Volumes**: Compare the daily transaction counts to gauge the adoption and usage of each L2.
 
-## Learn More
+### 2. Descriptive Cards
 
-To learn more about Next.js, take a look at the following resources:
+Accompanying the charts are informative cards that provide brief descriptions of opBNB, Combo, and xterio. These cards highlight the unique features and advantages of each L2, giving users a quick overview of what each solution offers.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. dApp Listings
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+BNB Layer Watch also includes a curated list of decentralized applications (dApps) running on each L2. This feature helps users discover and explore the ecosystem of applications available on these platforms.
 
-## Deploy on Vercel
+## Future Directions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+BNB Layer Watch aims to expand beyond its initial scope to provide a more comprehensive overview of the BNB Chain's L2 ecosystem. Future plans include:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Educational Resources**: Incorporating educational content to explain L2 technologies, their benefits, and how they integrate with the BNB Chain. This will help users understand the broader implications of L2 adoption.
+- **Chain-Specific Deep Dives**: Offering in-depth analyses of individual L2s, with a focus on metrics like Total Value Locked (TVL), unique active addresses, and more detailed transaction data.
+
+- **Real-time Updates**: Enhancing the platform with near real-time data updates to reflect the rapidly evolving L2 landscape, ensuring users always have access to the latest information.
+
+- **Addition of other Layer2s**: I plan on adding more Layer2s to the mix with the more time I spend on the project.
+
+## Conclusion
+
+BNB Layer Watch is a dynamic and evolving project aimed at providing valuable insights into the BNB Chain's L2 ecosystem. Whether you're a developer seeking the best L2 for your dApp, an investor tracking L2 adoption, or simply an enthusiast interested in the health and growth of BNB Chain, BNB Layer Watch offers the tools and data you need.
+
+Stay tuned as we continue to build out the platform, adding new features and expanding the scope to fully meet the needs of our users.

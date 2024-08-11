@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -31,7 +31,7 @@ import type { LayerStatisticsData } from "@/server/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 import { LoadingChart } from "./LoadingChart";
-import { getActiveAccounts_xterio, getStats_xterio } from "@/server/xterio";
+import { getStats_xterio } from "@/server/xterio";
 
 type ChartDataType = {
   timestamp: number;
@@ -47,34 +47,39 @@ type AnalyticsChartProps = {
 };
 
 export default function AnalyticsChart(props: AnalyticsChartProps) {
-  const [chartData, setChartData] = useState<ChartDataType[]>([]);
   const [timePeriod, setTimePeriod] = useState<
     "1 week" | "1 month" | "6 months" | "1 year" | "All time"
   >("1 week");
 
-  const chartConfig = {
-    stats: {
-      label: props.title,
-    },
-    opBNB: {
-      label: "opBNB",
-      // color: "hsl(var(--chart-1))",
-      color: "hsl(var(--opBNB))",
-    },
-    combo: {
-      label: "Combo",
-      // color: "hsl(var(--chart-2))",
-      color: "hsl(var(--combo))",
-    },
-    xterio: {
-      label: "Xterio",
-      // color: "hsl(var(--chart-2))",
-      color: "hsl(var(--xterio))",
-    },
-  } satisfies ChartConfig;
+  const [selectedLayers, setSelectedLayers] = useState<string[]>([
+    "opBNB",
+    "combo",
+    "xterio",
+  ]);
+
+  const chartConfig = useMemo(
+    () => ({
+      stats: {
+        label: props.title,
+      },
+      opBNB: {
+        label: "opBNB",
+        color: "hsl(var(--opBNB))",
+      },
+      combo: {
+        label: "Combo",
+        color: "hsl(var(--combo))",
+      },
+      xterio: {
+        label: "Xterio",
+        color: "hsl(var(--xterio))",
+      },
+    }),
+    [props.title]
+  );
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getStats", props.chartType, timePeriod],
+    queryKey: ["getStats", props.chartType],
     queryFn: async () => {
       if (props.stats && props.chartType) {
         const { opBNB, combo } = props.stats;
@@ -116,13 +121,14 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
           }
         }
 
-        const mergedData = Object.values(mergedDataMap);
-        console.log(filterDataByPeriod(mergedData, timePeriod));
+        // const mergedData = Object.values(mergedDataMap);
+        // return filterDataByPeriod(mergedData, timePeriod);
 
-        return filterDataByPeriod(mergedData, timePeriod);
+        return Object.values(mergedDataMap);
       }
     },
     enabled: !!props.stats && !!props.chartType,
+    refetchOnWindowFocus: false, // Prevent refetching on window focus
   });
 
   const filterDataByPeriod = (
@@ -150,22 +156,46 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   };
 
+  const filteredData = useMemo(() => {
+    console.log("Period Change");
+    const chartData = data ? filterDataByPeriod(data, timePeriod) : [];
+
+    return chartData?.map((item) => {
+      const filteredItem: Partial<ChartDataType> = {
+        timestamp: item.timestamp,
+      };
+
+      if (selectedLayers.includes("opBNB")) filteredItem.opBNB = item.opBNB;
+      if (selectedLayers.includes("combo")) filteredItem.combo = item.combo;
+      if (selectedLayers.includes("xterio")) filteredItem.xterio = item.xterio;
+
+      return filteredItem;
+    });
+  }, [data, timePeriod, filterDataByPeriod, selectedLayers]);
+
   if (isLoading) {
     return <LoadingChart />;
   }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="pb-4">{props.title}</CardTitle>
         <CardDescription>
-          <LayerSelector />
-          <TimePeriodSelector onChange={setTimePeriod} />{" "}
+          <LayerSelector
+            onChange={setSelectedLayers}
+            selectedLayers={selectedLayers} // Pass selected layers
+          />
+          <TimePeriodSelector
+            onChange={setTimePeriod}
+            selectedTimePeriod={timePeriod}
+          />
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
-            data={data}
+            data={filteredData}
             margin={{
               left: 12,
               right: 12,
@@ -188,32 +218,37 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
             ) : (
               <YAxis />
             )}
-
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent labelKey="stats" indicator="dot" />}
             />
-            <Area
-              dataKey="opBNB"
-              type="natural"
-              fill="var(--color-opBNB)"
-              fillOpacity={0.4}
-              stroke="var(--color-opBNB)"
-            />
-            <Area
-              dataKey="combo"
-              type="natural"
-              fill="var(--color-combo)"
-              fillOpacity={0.4}
-              stroke="var(--color-combo)"
-            />
-            <Area
-              dataKey="xterio"
-              type="natural"
-              fill="var(--color-xterio)"
-              fillOpacity={0.4}
-              stroke="var(--color-xterio)"
-            />
+            {selectedLayers.includes("opBNB") && (
+              <Area
+                dataKey="opBNB"
+                type="natural"
+                fill="var(--color-opBNB)"
+                fillOpacity={0.4}
+                stroke="var(--color-opBNB)"
+              />
+            )}
+            {selectedLayers.includes("combo") && (
+              <Area
+                dataKey="combo"
+                type="natural"
+                fill="var(--color-combo)"
+                fillOpacity={0.4}
+                stroke="var(--color-combo)"
+              />
+            )}
+            {selectedLayers.includes("xterio") && (
+              <Area
+                dataKey="xterio"
+                type="natural"
+                fill="var(--color-xterio)"
+                fillOpacity={0.4}
+                stroke="var(--color-xterio)"
+              />
+            )}
           </AreaChart>
         </ChartContainer>
       </CardContent>
@@ -221,7 +256,6 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              {/* Dynamically display the date range */}
               {data?.length
                 ? `${formatDate(data[0].timestamp)} - ${formatDate(
                     data[data.length - 1].timestamp
