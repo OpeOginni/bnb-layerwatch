@@ -16,6 +16,15 @@ export interface xterioStatsResponse {
   chart: { date: string; value: string }[];
 }
 
+export interface opBNBDappsResponse {
+  currentPage: number;
+  list: {
+    dapp: DappData;
+    staticInfo: DappStatsInfo;
+  }[];
+  totalCount: number;
+}
+
 export interface LayerStatisticsData {
   timestamp: number;
   count: number;
@@ -84,4 +93,31 @@ export interface LayerStatisticsData {
   last_month_active_contract_count: string;
   last_month_active_account_count: string;
   last_month_transaction_fee: string;
+}
+
+export interface DappData {
+  category: string;
+  description: string;
+  logo_url: string;
+  name: string;
+  website: string;
+}
+
+export interface DappStatsInfo {
+  daily: {
+    users: {
+      value: number;
+    };
+    txns: {
+      value: number;
+    };
+  };
+  monthly: {
+    users: {
+      value: number;
+    };
+    txns: {
+      value: number;
+    };
+  };
 }

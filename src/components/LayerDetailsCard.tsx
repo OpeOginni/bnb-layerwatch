@@ -15,6 +15,7 @@ type LayerDetailsCardProps = {
   logo: string;
   homeSite: string;
   dapps: string;
+  specific: boolean;
 };
 
 export default function LayerDetailsCard(props: LayerDetailsCardProps) {
@@ -40,13 +41,21 @@ export default function LayerDetailsCard(props: LayerDetailsCardProps) {
         >
           Learn More
         </Link>
-        <Link
+        {props.specific ? (<Link
           className="border-2 bg-black text-white border-black rounded-lg px-3 py-2 hover:bg-slate-900"
           href={props.dapps}
           target="_blank"
         >
+          Check Out More dApps
+        </Link>) : (<Link
+          className="border-2 bg-black text-white border-black rounded-lg px-3 py-2 hover:bg-slate-900"
+          href={`/dapps/${props.name.toLowerCase()}`}
+          target="_blank"
+        >
           Check Out dApps
-        </Link>
+        </Link>)
+        }
+        
       </CardFooter>
     </Card>
   );
