@@ -17,12 +17,10 @@ export interface xterioStatsResponse {
 }
 
 export interface opBNBDappsResponse {
-  currentPage: number;
   list: {
     dapp: DappData;
-    staticInfo: DappStatsInfo;
+    staticInfo?: DappStatsInfo;
   }[];
-  totalCount: number;
 }
 
 export interface LayerStatisticsData {
@@ -104,7 +102,7 @@ export interface DappData {
 }
 
 export interface DappStatsInfo {
-  daily: {
+  daily?: {
     users: {
       value: number;
     };
@@ -112,7 +110,7 @@ export interface DappStatsInfo {
       value: number;
     };
   };
-  monthly: {
+  monthly?: {
     users: {
       value: number;
     };

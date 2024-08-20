@@ -50,7 +50,6 @@ export default function LayerDetailsCard(props: LayerDetailsCardProps) {
         </Link>) : (<Link
           className="border-2 bg-black text-white border-black rounded-lg px-3 py-2 hover:bg-slate-900"
           href={`/dapps/${props.name.toLowerCase()}`}
-          target="_blank"
         >
           Check Out dApps
         </Link>)

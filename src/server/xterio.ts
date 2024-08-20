@@ -4,17 +4,23 @@ import { ChartEnums } from "@/enums/ChartEnums";
 import type { LayerStatisticsData, xterioStatsResponse } from "./interfaces";
 
 export async function getStats_xterio(statsType: ChartEnums) {
-  switch (statsType) {
-    case ChartEnums.ACTIVE_ACCOUNTS:
-      return getActiveAccounts_xterio();
-    case ChartEnums.AVERAGE_GAS_PRICE:
-      return getAverageGasPrice_xterio();
-    case ChartEnums.TRANSACTIONS:
-      return getTransactions_xterio();
-    case ChartEnums.BNB_TRANSFERS:
-      return getBnbTransfers_xterio();
-    default:
-      return [];
+  try {
+    switch (statsType) {
+      case ChartEnums.ACTIVE_ACCOUNTS:
+        return await getActiveAccounts_xterio();
+      case ChartEnums.AVERAGE_GAS_PRICE:
+        return await getAverageGasPrice_xterio();
+      case ChartEnums.TRANSACTIONS:
+        return await getTransactions_xterio();
+      case ChartEnums.BNB_TRANSFERS:
+        return await getBnbTransfers_xterio();
+      default:
+        return [];
+    }
+  } catch (error) {
+    console.error("Error fetching Xterio data:", error);
+    // Return an empty array to signify no data available
+    return [];
   }
 }
 

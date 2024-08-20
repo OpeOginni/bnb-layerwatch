@@ -22,6 +22,8 @@ export default function Header() {
       )}
     >
       <div className="flex items-center gap-2 text-3xl text-center pl-9 pr-9 py-7">
+        <Link href="/" className="flex flex-row justify-center items-center gap-2">
+
         <span>
           <BnbLogoSVG />
         </span>
@@ -29,6 +31,7 @@ export default function Header() {
           <h1 className="pt-1">Layer</h1>
           <h1 className="pt-1">Watch</h1>
         </div>
+        </Link>
 
         <div className="flex ml-auto gap-4 text-xl">
           {/* <Link className={"text-gray-400 hover:text-black"} href={"/analytics"}> */}
@@ -50,7 +53,7 @@ export default function Header() {
             className={cn(
               pathname.includes("/dapps") ? selectedClass : unselectedClass
             )}
-            href={"/"}
+            href={"/dapps"}
           >
             dApps
           </Link>
