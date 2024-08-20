@@ -1,4 +1,5 @@
 export enum LayerEnums {
-  OP_BNB = "opBNB",
+  OP_BNB = "opbnb",
   COMBO = "combo",
+  XTERIO = "xterio",
 }

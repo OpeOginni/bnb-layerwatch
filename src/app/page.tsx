@@ -1,7 +1,7 @@
 import { Josefin_Sans } from "next/font/google";
 
 import LayerDetailsCard from "@/components/LayerDetailsCard";
-import getLayersStats from "@/server/general";
+import {getLayersStats} from "@/server/general";
 import { cn } from "@/lib/utils";
 
 const sans = Josefin_Sans({ weight: "700", subsets: ["latin"] });
@@ -28,6 +28,7 @@ export default async function Home() {
             logo="./logo/bnb.png"
             homeSite="https://opbnb.bnbchain.org/en"
             dapps="https://dappbay.bnbchain.org/ranking/chain/opbnb"
+            specific={false}
           />
           <LayerDetailsCard
             name="COMBO"
@@ -36,6 +37,7 @@ export default async function Home() {
             logo="./logo/combo.png"
             homeSite="https://combonetwork.io/"
             dapps="https://combonetwork.io/all-apps"
+            specific={false}
           />
           <LayerDetailsCard
             name="Xterio"
@@ -44,6 +46,7 @@ export default async function Home() {
             logo="./logo/xterio.png"
             homeSite="https://xter.io/"
             dapps="https://xter.io/games"
+            specific={false}
           />
         </section>
       </div>
