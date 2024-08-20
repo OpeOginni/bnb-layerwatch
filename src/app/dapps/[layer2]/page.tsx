@@ -18,7 +18,8 @@ const LayerDetails = [
     type: "universal",
     logo: "/logo/bnb.png",
     homeSite: "https://opbnb.bnbchain.org/en",
-    dapps: "https://dappbay.bnbchain.org/ranking/chain/opbnb?utm_source=bnb_layerwatch&utm_medium=direct&utm_campaign=regular&utm_content=traffic_redirect"
+    dapps:
+      "https://dappbay.bnbchain.org/ranking/chain/opbnb?utm_source=bnb_layerwatch&utm_medium=direct&utm_campaign=regular&utm_content=traffic_redirect",
   },
   {
     name: "COMBO",
@@ -27,7 +28,7 @@ const LayerDetails = [
     type: "gaming",
     logo: "/logo/combo.png",
     homeSite: "https://combonetwork.io/",
-    dapps: "https://combonetwork.io/all-apps"
+    dapps: "https://combonetwork.io/all-apps",
   },
   {
     name: "Xterio",
@@ -36,31 +37,29 @@ const LayerDetails = [
     type: "gaming",
     logo: "/logo/xterio.png",
     homeSite: "https://xter.io/",
-    dapps: ""
+    dapps: "https://xter.io/games",
   },
 ];
 
 function formatNumber(value: number) {
   if (value >= 1000000) {
-    return (value / 1000000).toFixed(2) + "M";
-  } else if (value >= 1000) {
-    return (value / 1000).toFixed(2) + "K";
-  } else {
-    return value.toString();
+    return `${(value / 1000000).toFixed(2)}M`;
   }
+  if (value >= 1000) {
+    return `${(value / 1000).toFixed(2)}K`;
+  }
+  return value.toString();
 }
-
 
 export default async function LayerDappsPage({
   params,
 }: {
   params: { layer2: "opbnb" | "combo" | "xterio" };
 }) {
-  
+  const dapps = await getDapps(params.layer2);
 
-  const dapps = await getDapps(params.layer2)
-
-  const imageClass = params.layer2 === "combo" ? "object-contain bg-black" : "object-cover"
+  const imageClass =
+    params.layer2 === "combo" ? "object-contain bg-black" : "object-cover";
 
   return (
     <main className="flex-1">
@@ -77,72 +76,75 @@ export default async function LayerDappsPage({
           />
         </section>
 
-  <div className="grid grid-cols-1 gap-6">
-  {dapps?.list.length === 0 ? (
-    <div className="flex flex-col gap-4 items-center justify-center">
-    <p className="text-center text-gray-600">No dApps available</p>
-    <Ghost className="w-14 h-14 text-gray-600" />
-    </div>
-  ) : (
-    dapps?.list.map((item) => (
-      item.dapp ? (
-        <div
-          key={item.dapp.name}
-          className="flex flex-row items-center gap-4 p-6 border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 bg-white"
-        >
-          <img
-            src={item.dapp.logo_url || "/logo/xterio.png"}
-            alt={item.dapp.name}
-            className={cn("w-20 h-20 rounded-full", imageClass)}
-          />
-          <div className="flex flex-col justify-between w-full">
-            <div className="flex items-center justify-between">
-              <p className="text-2xl font-semibold text-gray-900">
-                {item.dapp.name}
-              </p>
-              {item.staticInfo?.daily ? (
-                <div className="flex flex-row gap-6 text-right">
-                  <p className="text-sm font-medium text-blue-600">
-                    Daily Active Users:{" "}
-                    <span className="font-semibold text-blue-800">
-                      {formatNumber(item.staticInfo.daily.users.value)}
-                    </span>
-                  </p>
-                  <p className="text-sm font-medium text-green-600">
-                    Daily Transactions:{" "}
-                    <span className="font-semibold text-green-800">
-                      {formatNumber(item.staticInfo.daily.txns.value)}
-                    </span>
-                  </p>
+        <div className="grid grid-cols-1 gap-6">
+          {dapps?.list.length === 0 ? (
+            <div className="flex flex-col gap-4 items-center justify-center">
+              <p className="text-center text-gray-600">No dApps available</p>
+              <Ghost className="w-14 h-14 text-gray-600" />
+            </div>
+          ) : (
+            dapps?.list.map((item) =>
+              item.dapp ? (
+                <div
+                  key={item.dapp.name}
+                  className="flex flex-row items-center gap-4 p-6 border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 bg-white"
+                >
+                  <img
+                    src={item.dapp.logo_url || "/logo/xterio.png"}
+                    alt={item.dapp.name}
+                    className={cn("w-20 h-20 rounded-full", imageClass)}
+                  />
+                  <div className="flex flex-col justify-between w-full">
+                    <div className="flex items-center justify-between">
+                      <p className="text-2xl font-semibold text-gray-900">
+                        {item.dapp.name}
+                      </p>
+                      {item.staticInfo?.daily ? (
+                        <div className="flex flex-row gap-6 text-right">
+                          <p className="text-sm font-medium text-blue-600">
+                            Daily Active Users:{" "}
+                            <span className="font-semibold text-blue-800">
+                              {formatNumber(item.staticInfo.daily.users.value)}
+                            </span>
+                          </p>
+                          <p className="text-sm font-medium text-green-600">
+                            Daily Transactions:{" "}
+                            <span className="font-semibold text-green-800">
+                              {formatNumber(item.staticInfo.daily.txns.value)}
+                            </span>
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">
+                          No data available
+                        </p>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {item.dapp.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-sm font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
+                        {item.dapp.category}
+                      </span>
+                      <Link
+                        target="_blank"
+                        href={item.dapp.website}
+                        className="text-blue-500 hover:underline text-sm flex flex-row gap-1"
+                      >
+                        Visit Website{" "}
+                        <span className="h-1 w-1 pr-3">
+                          <MoveUpRight />
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <p className="text-sm text-gray-500">No data available</p>
-              )}
-            </div>
-            <p className="text-sm text-gray-600 mt-1">
-              {item.dapp.description}
-            </p>
-            <div className="flex items-center justify-between mt-4">
-              <span className="text-sm font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
-                {item.dapp.category}
-              </span>
-              <Link
-                target="_blank"
-                href={item.dapp.website}
-                className="text-blue-500 hover:underline text-sm flex flex-row gap-1"
-              >
-                Visit Website{" "}
-                <span className="h-1 w-1 pr-3"><MoveUpRight /></span>
-              </Link>
-            </div>
-          </div>
+              ) : null
+            )
+          )}
         </div>
-      ) : null
-    )))}
-
-</div>
-</div>
-
-</main>
+      </div>
+    </main>
   );
 }

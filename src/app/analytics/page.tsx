@@ -1,7 +1,7 @@
 import AnalyticsChart from "@/components/AnalyticsChart";
 import { LoadingChart, LoadingChartGrid } from "@/components/LoadingChart";
 import { ChartEnums } from "@/enums/ChartEnums";
-import {getLayersStats} from "@/server/general";
+import { getLayersStats } from "@/server/general";
 import { Suspense } from "react";
 
 export default async function AnalyticsPage() {

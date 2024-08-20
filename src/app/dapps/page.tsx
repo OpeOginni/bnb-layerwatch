@@ -41,7 +41,9 @@ export default function DappsPage() {
                 alt={dapp.name}
                 className="w-20 h-20 rounded-full object-cover"
               />
-              <h2 className="text-xl font-semibold text-gray-900">{dapp.name}</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                {dapp.name}
+              </h2>
               <Link
                 href={dapp.link}
                 className="text-center text-blue-500 hover:underline text-sm flex flex-row gap-1"
