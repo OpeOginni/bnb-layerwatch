@@ -1,15 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -145,7 +137,7 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
 
     switch (period) {
       case "1 week":
-        return data.filter((d) => d.timestamp >= now - 7 * 24 * 3600);
+        return data.filter((d) => d.timestamp >= now - 23 * 24 * 3600);
       case "1 month":
         return data.filter((d) => d.timestamp >= now - 30 * 24 * 3600);
       case "3 months":
@@ -259,9 +251,11 @@ export default function AnalyticsChart(props: AnalyticsChartProps) {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              {data?.length
-                ? `${formatDate(data[0].timestamp)} - ${formatDate(
-                    data[data.length - 1].timestamp
+              {filteredData?.length
+                ? `${formatDate(
+                    filteredData[0]?.timestamp ?? 0
+                  )} - ${formatDate(
+                    filteredData[filteredData.length - 1]?.timestamp ?? 0
                   )}`
                 : ""}
             </div>
