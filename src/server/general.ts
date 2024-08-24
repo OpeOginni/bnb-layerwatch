@@ -2,7 +2,7 @@ import { LayerEnums } from "@/enums/LayerEnums";
 import { getStats_combo } from "./combo";
 import { getDapps_opBNB, getStats_opBNB } from "./opBNB";
 import { COMBO_DAPPS } from "@/constants/combo.constants";
-import { opBNBDappsResponse } from "./interfaces";
+import type { opBNBDappsResponse } from "./interfaces";
 
 export async function getLayersStats() {
   const [data_opBNB, data_combo] = await Promise.all([
@@ -21,9 +21,11 @@ export async function getDapps(
 ): Promise<opBNBDappsResponse | undefined> {
   if (layer === LayerEnums.OP_BNB) {
     return await getDapps_opBNB();
-  } else if (layer === LayerEnums.COMBO) {
+  }
+  if (layer === LayerEnums.COMBO) {
     return COMBO_DAPPS;
-  } else if (layer === LayerEnums.XTERIO) {
+  }
+  if (layer === LayerEnums.XTERIO) {
     return { list: [] };
   }
 }

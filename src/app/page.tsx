@@ -1,14 +1,12 @@
 import { Josefin_Sans } from "next/font/google";
 
 import LayerDetailsCard from "@/components/LayerDetailsCard";
-import {getLayersStats} from "@/server/general";
+import { getLayersStats } from "@/server/general";
 import { cn } from "@/lib/utils";
 
 const sans = Josefin_Sans({ weight: "700", subsets: ["latin"] });
 
 export default async function Home() {
-  const stats = await getLayersStats();
-
   return (
     <main className="flex-1">
       <div className="px-14 max-w-[1400px] mx-auto relative">

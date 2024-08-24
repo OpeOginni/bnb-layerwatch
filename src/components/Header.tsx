@@ -22,15 +22,17 @@ export default function Header() {
       )}
     >
       <div className="flex items-center gap-2 text-3xl text-center pl-9 pr-9 py-7">
-        <Link href="/" className="flex flex-row justify-center items-center gap-2">
-
-        <span>
-          <BnbLogoSVG />
-        </span>
-        <div className="flex items-center gap-1 text-black">
-          <h1 className="pt-1">Layer</h1>
-          <h1 className="pt-1">Watch</h1>
-        </div>
+        <Link
+          href="/"
+          className="flex flex-row justify-center items-center gap-2"
+        >
+          <span>
+            <BnbLogoSVG />
+          </span>
+          <div className="flex items-center gap-1 text-black">
+            <h1 className="pt-1">Layer</h1>
+            <h1 className="pt-1">Watch</h1>
+          </div>
         </Link>
 
         <div className="flex ml-auto gap-4 text-xl">
@@ -64,6 +66,14 @@ export default function Header() {
             href={"/roadmap"}
           >
             Roadmap
+          </Link>
+          <Link
+            className={cn(
+              pathname === "/questionnaire" ? selectedClass : unselectedClass
+            )}
+            href={"/questionnaire"}
+          >
+            Questionnaire
           </Link>
         </div>
       </div>
