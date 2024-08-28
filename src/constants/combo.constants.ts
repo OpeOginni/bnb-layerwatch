@@ -1,4 +1,4 @@
-import { opBNBDappsResponse } from "@/server/interfaces";
+import type { opBNBDappsResponse } from "@/server/interfaces";
 
 export const COMBO_DAPPS: opBNBDappsResponse = {
   list: [

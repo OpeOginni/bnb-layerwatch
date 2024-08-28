@@ -3,6 +3,7 @@ import { getStats_combo } from "./combo";
 import { getDapps_opBNB, getStats_opBNB } from "./opBNB";
 import { COMBO_DAPPS } from "@/constants/combo.constants";
 import type { opBNBDappsResponse } from "./interfaces";
+import { XTERIO_DAPPS } from "@/constants/xterio.constants";
 
 export async function getLayersStats() {
   const [data_opBNB, data_combo] = await Promise.all([
@@ -26,6 +27,6 @@ export async function getDapps(
     return COMBO_DAPPS;
   }
   if (layer === LayerEnums.XTERIO) {
-    return { list: [] };
+    return XTERIO_DAPPS;
   }
 }

@@ -63,8 +63,8 @@ export default async function LayerDappsPage({
 
   return (
     <main className="flex-1">
-      <div className="  px-14 max-w-[1400px] mx-auto relative">
-        <section className="flex items-center justify-center mx-auto gap-2 px-4 py-8 md:py-12 md:pb-8 lg:py-12 lg:pb-10">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-14 max-w-[1400px] mx-auto relative">
+        <section className="flex items-center justify-center mx-auto gap-2 py-8">
           <LayerDetailsCard
             name={LayerDetails[LayerIndex[params.layer2]].name}
             description={LayerDetails[LayerIndex[params.layer2]].description}
@@ -87,7 +87,7 @@ export default async function LayerDappsPage({
               item.dapp ? (
                 <div
                   key={item.dapp.name}
-                  className="flex flex-row items-center gap-4 p-6 border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 bg-white"
+                  className="flex flex-col sm:flex-row items-center gap-4 p-4 sm:p-6 border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 bg-white"
                 >
                   <img
                     src={item.dapp.logo_url || "/logo/xterio.png"}
@@ -95,12 +95,12 @@ export default async function LayerDappsPage({
                     className={cn("w-20 h-20 rounded-full", imageClass)}
                   />
                   <div className="flex flex-col justify-between w-full">
-                    <div className="flex items-center justify-between">
-                      <p className="text-2xl font-semibold text-gray-900">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between">
+                      <p className="text-xl sm:text-2xl font-semibold text-gray-900 text-center sm:text-left mb-2 sm:mb-0">
                         {item.dapp.name}
                       </p>
                       {item.staticInfo?.daily ? (
-                        <div className="flex flex-row gap-6 text-right">
+                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-center sm:text-right">
                           <p className="text-sm font-medium text-blue-600">
                             Daily Active Users:{" "}
                             <span className="font-semibold text-blue-800">
@@ -120,22 +120,20 @@ export default async function LayerDappsPage({
                         </p>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 mt-2 text-center sm:text-left">
                       {item.dapp.description}
                     </p>
-                    <div className="flex items-center justify-between mt-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-2 sm:gap-0">
                       <span className="text-sm font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
                         {item.dapp.category}
                       </span>
                       <Link
                         target="_blank"
                         href={item.dapp.website}
-                        className="text-blue-500 hover:underline text-sm flex flex-row gap-1"
+                        className="text-blue-500 hover:underline text-sm flex flex-row items-center gap-1"
                       >
-                        Visit Website{" "}
-                        <span className="h-1 w-1 pr-3">
-                          <MoveUpRight />
-                        </span>
+                        Visit Website
+                        <MoveUpRight className="h-4 w-4" />
                       </Link>
                     </div>
                   </div>
