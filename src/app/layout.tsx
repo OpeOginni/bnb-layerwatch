@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -22,13 +23,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ReactQueryClientProvider>
-          {" "}
           <div className="relative flex min-h-screen flex-col bg-background">
             <Header />
             <main className="flex-grow pb-6">{children}</main>
             <Footer />
           </div>
         </ReactQueryClientProvider>
+        <Analytics />
       </body>
     </html>
   );
